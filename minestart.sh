@@ -23,7 +23,7 @@ RAM_MAX="4G" # M = Megabytes, G = Gigabytes
 
 SCREEN_NAME="MyServer"
 
-JDK_INSTALLED=1 # Set to 1, if you're using the JDK instead of JRE on your server
+JDK_INSTALLED=0 # Set to 1, if you're using the JDK instead of JRE on your server
 
 ###################
 ### APPLICATION ###
