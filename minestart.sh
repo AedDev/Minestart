@@ -44,18 +44,25 @@ COLOR_BLUE="\e[94m"
 ### FUNCTIONS ###
 #################
 
+# Prints info message to shell
 function info {
   echo -e "$COLOR_LGRAY[${COLOR_BLUE}MINESTART${COLOR_LGRAY}][${COLOR_GREEN}INFO${COLOR_LGRAY}] $@$COLOR_DEFAULT"
 }
 
+# Prints error message to shell
 function error {
   echo -e "$COLOR_LGRAY[${COLOR_BLUE}MINESTART${COLOR_LGRAY}][${COLOR_RED}ERROR${COLOR_LGRAY}] $@$COLOR_DEFAULT"
 }
 
+# Prints warning message to shell
 function warn {
   echo -e "$COLOR_LGRAY[${COLOR_BLUE}MINESTART${COLOR_LGRAY}][${COLOR_YELLOW}WARN${COLOR_LGRAY}] $@$COLOR_DEFAULT"
 }
 
+# Checks, if package 'screen' is installed
+#
+# 1 = Package is installed
+# 2 = Package is NOT installed
 function isScreenInstalled {
   screen -v &> /dev/null
   if [[ $? -eq 1 ]]; then
@@ -83,7 +90,8 @@ function isRunning {
   fi
 }
 
-# This function returns the PID of the screen session $SCREEN_NAME (see definition at the top of this file)
+# This function returns the PID of the screen session $SCREEN_NAME
+# (see definition at the top of this file)
 function getScreenPid {
   local SCREEN_PID=$(screen -ls | grep "$SCREEN_NAME" | grep -oEi "([0-9]+)\." | tr -d '.')
   
@@ -104,6 +112,7 @@ function doCmd {
   fi
 }
 
+# Opens the minecraft console (screen session $SCREEN_NAME)
 function openConsole {
   if [[ $(isRunning) -eq 1 ]]; then
     screen -r "$SCREEN_NAME"
@@ -112,6 +121,7 @@ function openConsole {
   fi
 }
 
+# Starts the minecraft server
 function startServer {
   local RUNNING=$(isRunning)
   
@@ -168,6 +178,7 @@ function startServer {
   fi
 }
 
+# Stops the minecraft server
 function stopServer {
   info "Stopping Minecraft Server ($SCREEN_NAME)"
   
@@ -205,6 +216,7 @@ function stopServer {
   done
 }
 
+# Prints the help message
 function printHelp {
   # Set color to white
   echo -e "$COLOR_LGRAY"
