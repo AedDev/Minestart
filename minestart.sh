@@ -118,34 +118,48 @@ function startServer {
   if [[ $RUNNING -eq 0 ]]; then
     if [[ $JDK_INSTALLED -eq 1 ]]; then
       screen -S "$SCREEN_NAME" -d -m java -jar -server "-Xms$RAM_MIN" "-Xmx$RAM_MAX" "$SERVER_JAR"
-      
-      # Save PID
-      local PID=$(getScreenPid)
-      echo $PID > "$SERVER_JAR.pid"
 
-      if [[ $? -eq 0 ]]; then
+      local ERR_CODE=$?
+
+      if [[ $ERR_CODE -eq 0 ]]; then
+        # Save PID
+        local PID=$(getScreenPid)
+        echo $PID > "$SERVER_JAR.pid"
+      
         info "Starting Minecraft Server ..."
         info "Using -server Flag (JDK)"
         info "Using JAR File $SERVER_JAR"
         info "Process ID: $PID"
         info "Server started successfully!"
       else
-        error "Could not start Minecraft Server"
+        error "Could not start Minecraft Server (Error Code: $ERR_CODE)"
+        
+        # Error Code 127 = Screen is not installed
+        if [[ $ERR_CODE -eq 127 ]]; then
+          error "You have to install the package 'screen'"
+        fi
       fi
     else
       screen -S "$SCREEN_NAME" -d -m java -jar "-Xms$RAM_MIN" "-Xmx$RAM_MAX" "$SERVER_JAR"
 
-      # Save PID
-      local PID=$(getScreenPid)
-      echo $PID > "$SERVER_JAR.pid"
+      local ERR_CODE=$?
 
-      if [[ $? -eq 0 ]]; then
+      if [[ $ERR_CODE -eq 0 ]]; then
+        # Save PID
+        local PID=$(getScreenPid)
+        echo $PID > "$SERVER_JAR.pid"
+
         info "Starting Minecraft Server ..."
         info "Using JAR File $SERVER_JAR"
         info "Process ID: $PID"
         info "Server started successfully!"
       else
-        error "Could not start Minecraft Server"
+        error "Could not start Minecraft Server (Error Code: $ERR_CODE)"
+        
+        # Error Code 127 = Screen is not installed
+        if [[ $ERR_CODE -eq 127 ]]; then
+          error "You have to install the package 'screen'"
+        fi
       fi
     fi
   else
@@ -192,6 +206,9 @@ function stopServer {
 }
 
 function printHelp {
+  # Set color to white
+  echo -e "$COLOR_LGRAY"
+  
   printf "##########################\n"
   printf "### MINESTART v${VERSION} ###\n"
   printf "##########################\n\n"
@@ -205,10 +222,14 @@ function printHelp {
   printf "2. ./minestart.sh stop (Stopps the server from the current directory)\n"
   printf "3. ./minestart.sh status (Prints the server status (online / offline))\n"
   printf "4. ./minecraft.sh restart (Restarts the server from the current directory)\n"
-  printf "5. ./minecraft.sh console (Opens the screen session with the minecraft server console)\n"
-  printf "6. ./minecraft.sh cmd [cmdname] {params} (Executes the given Minecraft Command with optional arguments)\n\n"
+  printf "5. ./minecraft.sh reload (Reloads the server (alias for 'cmd reload')\n"
+  printf "6. ./minecraft.sh console (Opens the screen session with the minecraft server console)\n"
+  printf "7. ./minecraft.sh cmd [cmdname] {params} (Executes the given Minecraft Command with optional arguments)\n\n"
 
   printf "Questions? Ideas? Bugs? Contact me here: http://forum.mds-tv.de\n\n"
+  
+  # Reset color to default
+  echo -e "$COLOR_DEFAULT"
   
   exit
 }
@@ -222,11 +243,20 @@ if [[ -z $1 ]]; then
   printHelp
 fi
 
+# Check if given JAR file is existing
+if [ ! -f $SERVER_JAR ]; then
+  error "Could not find Server JAR file '$SERVER_JAR'"
+  error "Please set SERVER_JAR constant in $0"
+  exit 1
+fi
+
 # Check if screen is installed!
 SCREEN_INSTALLED=$(isScreenInstalled)
 
 if [[ $SCREEN_INSTALLED -eq 0 ]]; then
-  error "The package 'screen' could not be found!"
+  error "You have to install the package 'screen'"
+  error "On Debian based Systems (like Ubuntu) you can do: 'apt-get install screen'"
+  error "On RedHat based Systems (like CentOS) you can do: 'yum install screen'" 
   exit 1
 fi
 
