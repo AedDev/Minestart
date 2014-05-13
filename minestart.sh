@@ -5,7 +5,7 @@
 ##########################################################################
 #                                                                        #
 # Author:      Enrico Ludwig (Morph)                                     #
-# Version:     1.1.0.0 (12. May 2014)                                    #
+# Version:     1.1.1.0 (12. May 2014)                                    #
 # License:     GNU GPL v2 (See: http://www.gnu.org/licenses/gpl-2.0.txt) #
 # Created:     11. May 2014                                              #
 # Description: Control your Minecraft Server                             #
@@ -28,7 +28,7 @@ JDK_INSTALLED=1 # Set to 1, if you're using the JDK instead of JRE on your serve
 ###################
 ### APPLICATION ###
 ###################
-VERSION="1.1.0.0"
+VERSION="1.1.1.0"
 
 ###################
 ### COLOR CODES ###
