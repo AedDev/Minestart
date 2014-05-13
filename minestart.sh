@@ -16,7 +16,7 @@
 ### GENERAL SETTINGS ###
 ########################
 
-SERVER_JAR="craftbukkit-b173.jar"
+SERVER_JAR="server.jar"
 
 RAM_MIN="1G" # M = Megabytes, G = Gigabytes
 RAM_MAX="4G" # M = Megabytes, G = Gigabytes
