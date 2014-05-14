@@ -123,6 +123,13 @@ function openConsole {
 
 # Starts the minecraft server
 function startServer {
+  # Check if given JAR file is existing
+  if [[ ! -f $SERVER_JAR ]]; then
+    error "Could not find Server JAR file '$SERVER_JAR'"
+    error "Please set SERVER_JAR constant in $0"
+    exit 1
+  fi
+
   local RUNNING=$(isRunning)
   
   if [[ $RUNNING -eq 0 ]]; then
@@ -254,13 +261,6 @@ function printHelp {
 # Check, if first Param is set, or print help if not
 if [[ -z $1 ]]; then
   printHelp
-fi
-
-# Check if given JAR file is existing
-if [ ! -f $SERVER_JAR ]; then
-  error "Could not find Server JAR file '$SERVER_JAR'"
-  error "Please set SERVER_JAR constant in $0"
-  exit 1
 fi
 
 # Check if screen is installed!
