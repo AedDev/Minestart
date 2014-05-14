@@ -237,7 +237,7 @@ function printHelp {
   printf "5. ./minestart.sh reload (Reloads the server (alias for 'cmd reload')\n"
   printf "6. ./minestart.sh console (Opens the screen session with the minecraft server console)\n"
   printf "7. ./minestart.sh cmd [cmdname] {params} (Executes the given Minecraft Command with optional arguments)\n\n"
-  printf "8. ./minestart.sh help (Shows this help)
+  printf "8. ./minestart.sh help (Shows this help)"
 
   printf "Questions? Ideas? Bugs? Contact me here: http://forum.mds-tv.de\n\n"
   
