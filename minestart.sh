@@ -227,16 +227,17 @@ function printHelp {
   
   printf "Developed by Enrico Ludwig (Morph)\n\n"
   
-  printf "~$ minestart [start|stop|restart|status|(minecraft command)] [(minecraft params)]\n\n"
+  printf "~$ minestart [start|stop|restart|reload|help|status|(minecraft command)] [(minecraft params)]\n\n"
   
   printf "Examples:\n"
   printf "1. ./minestart.sh start (Starts the server from the current directory)\n"
   printf "2. ./minestart.sh stop (Stopps the server from the current directory)\n"
   printf "3. ./minestart.sh status (Prints the server status (online / offline))\n"
-  printf "4. ./minecraft.sh restart (Restarts the server from the current directory)\n"
-  printf "5. ./minecraft.sh reload (Reloads the server (alias for 'cmd reload')\n"
-  printf "6. ./minecraft.sh console (Opens the screen session with the minecraft server console)\n"
-  printf "7. ./minecraft.sh cmd [cmdname] {params} (Executes the given Minecraft Command with optional arguments)\n\n"
+  printf "4. ./minestart.sh restart (Restarts the server from the current directory)\n"
+  printf "5. ./minestart.sh reload (Reloads the server (alias for 'cmd reload')\n"
+  printf "6. ./minestart.sh console (Opens the screen session with the minecraft server console)\n"
+  printf "7. ./minestart.sh cmd [cmdname] {params} (Executes the given Minecraft Command with optional arguments)\n\n"
+  printf "8. ./minestart.sh help (Shows this help)
 
   printf "Questions? Ideas? Bugs? Contact me here: http://forum.mds-tv.de\n\n"
   
