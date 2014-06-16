@@ -22,6 +22,7 @@ Planned features
 * Interactive console
 * Removing worlds
 * Backup Manager
+* More default server commands (Such as: say, msg, tp, ...)
 
 _If you have some fresh ideas, please inform me via mail: [admin@mds-tv.de](mailto:admin@mds-tv "Mail the developer")_
 
