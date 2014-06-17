@@ -301,6 +301,8 @@ case "$1" in
   "reload")
     doCmd "reload"
     ;;
+  "say")
+    doCmd "say" ${@:2}
 
   #- Open the screen session (Minecraft server console)
   "console")
