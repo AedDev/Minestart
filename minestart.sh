@@ -346,7 +346,7 @@ case "$1" in
     openLog
     ;;
   "wdel")
-    removeWorld $1
+    removeWorld $2
     ;;
 
   #- Open the screen session (Minecraft server console)
