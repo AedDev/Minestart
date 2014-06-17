@@ -19,6 +19,7 @@ Tutorial
 Planned features
 ----------------
 
+* Install Minecraft server (Example: ./minestart.sh install bukkit-1.7.9)
 * Interactive console
 * Removing worlds
 * Backup Manager
