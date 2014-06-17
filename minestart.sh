@@ -236,10 +236,14 @@ function removeWorld {
           mkdir "$OLD_WORLDS"
         fi
 
+        warn "Moving world $1 to $OLD_WORLDS"
+
         mv "$1" "$OLD_WORLDS"
         mv "$1_nether" "$OLD_WORLDS"
         mv "$1_the_end" "$OLD_WORLDS"
       else
+        warn "Removing world $1 (NO BACKUP!!)"
+
         rm -Rf "$1" "$1_nether" "$1_the_end"
       fi
     else
