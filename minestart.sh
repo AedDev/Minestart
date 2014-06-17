@@ -29,7 +29,7 @@ JDK_INSTALLED=0 # Set to 1, if you're using the JDK instead of JRE on your serve
 ###################
 ### APPLICATION ###
 ###################
-VERSION="1.1.1.0"
+VERSION="1.2.0.0"
 
 ###################
 ### COLOR CODES ###
