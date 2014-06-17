@@ -5,7 +5,7 @@
 ##########################################################################
 #                                                                        #
 # Author:      Enrico Ludwig (Morph)                                     #
-# Version:     1.2.0.0 (12. May 2014)                                    #
+# Version:     1.2.0.0 (17. July 2014)                                    #
 # License:     GNU GPL v2 (See: http://www.gnu.org/licenses/gpl-2.0.txt) #
 # Created:     11. May 2014                                              #
 # Description: Control your Minecraft Server                             #
@@ -18,6 +18,8 @@
 
 SERVER_JAR="server.jar"
 LOG_FILE="server.log"   # Bukkit is: server.log, Spigot is: logs/latest.log
+SAVE_REMOVE_WORLDS=1    # If 1, worlds will not removed permanently but moved to $OLD_WORLDS directory
+OLD_WORLDS="old_worlds"
 
 RAM_MIN="1G" # M = Megabytes, G = Gigabytes
 RAM_MAX="4G" # M = Megabytes, G = Gigabytes
@@ -226,6 +228,26 @@ function stopServer {
   done
 }
 
+function removeWorld {
+  if [[ ! -z $1 ]]; then
+    if [[ -d $1 ]]; then
+      if [[ $SAVE_REMOVE_WORLDS -eq 1 ]]; then
+        if [[ ! -d $OLD_WORLDS ]]; then
+          mkdir $OLD_WORLDS
+        fi
+
+        mv $1 $OLD_WORLDS
+      else
+        rm -Rf $1
+      fi
+    else
+      error "The world directory $1 is not existing"
+    fi
+  else
+    error "No world name given"
+  fi
+}
+
 # Opens the minecraft log as stream (tail follow)
 function openLog {
   if [[ ! -f $LOG_FILE ]]; then
@@ -320,6 +342,9 @@ case "$1" in
     ;;
   "log")
     openLog
+    ;;
+  "wdel")
+    removeWorld $1
     ;;
 
   #- Open the screen session (Minecraft server console)
