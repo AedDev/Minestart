@@ -273,8 +273,9 @@ if [[ $SCREEN_INSTALLED -eq 0 ]]; then
   exit 1
 fi
 
-# Minecraft Server control
+### Commands ###
 case "$1" in
+  #- General control
   "start")
     startServer
     ;;
@@ -292,12 +293,16 @@ case "$1" in
       info "The Server with screen name '$SCREEN_NAME' is NOT running!"
     fi
     ;;
+
+  #- Execute server internal commands
   "cmd")
     doCmd ${@:2}
     ;;
   "reload")
     doCmd "reload"
     ;;
+
+  #- Open the screen session (Minecraft server console)
   "console")
     if [[ $(isRunning) -eq 1 ]]; then
       info "Entering Minecraft Server Console"
@@ -307,6 +312,8 @@ case "$1" in
       error "The Server with screen name '$SCREEN_NAME' is NOT running!"
     fi
     ;;
+
+  #- Get help
   "help")
     printHelp
     ;;
