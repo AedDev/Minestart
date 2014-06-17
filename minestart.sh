@@ -247,7 +247,7 @@ function printHelp {
   
   printf "Developed by Enrico Ludwig (Morph)\n\n"
   
-  printf "~$ minestart [start|stop|status|restart|reload|console|cmd|log|help] {params}\n\n"
+  printf "~$ ./minestart.sh [start|stop|status|restart|reload|console|cmd|log|help] {params}\n\n"
   
   printf "Examples:\n"
   printf "1. ./minestart.sh start\n"
@@ -257,7 +257,7 @@ function printHelp {
   printf "5. ./minestart.sh reload\n"
   printf "6. ./minestart.sh console (Opens the screen session with the minecraft server console)\n"
   printf "7. ./minestart.sh cmd [cmdname] {params} (Executes the given Minecraft Command with optional arguments)\n"
-  printf "8. ./minestart.sh log (Opens the logfile as stream using tail -f)
+  printf "8. ./minestart.sh log (Opens the logfile as stream using tail -f)"
   printf "9. ./minestart.sh help (Shows this help)\n\n"
 
   printf "Questions? Ideas? Bugs? Contact me here: http://forum.mds-tv.de\n\n"
