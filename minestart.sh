@@ -230,6 +230,7 @@ function stopServer {
 function openLog {
   if [[ ! -f $LOG_FILE ]]; then
     error "Logfile $LOG_FILE not found"
+    error "If you're using spigot, set logs/latest.log as LOG_FILE"
   else
     tail -f $LOG_FILE
   fi
@@ -246,17 +247,18 @@ function printHelp {
   
   printf "Developed by Enrico Ludwig (Morph)\n\n"
   
-  printf "~$ minestart [start|stop|restart|reload|help|status|(minecraft command)] [(minecraft params)]\n\n"
+  printf "~$ minestart [start|stop|status|restart|reload|console|cmd|log|help] {params}\n\n"
   
   printf "Examples:\n"
-  printf "1. ./minestart.sh start (Starts the server from the current directory)\n"
-  printf "2. ./minestart.sh stop (Stopps the server from the current directory)\n"
-  printf "3. ./minestart.sh status (Prints the server status (online / offline))\n"
-  printf "4. ./minestart.sh restart (Restarts the server from the current directory)\n"
-  printf "5. ./minestart.sh reload (Reloads the server (alias for 'cmd reload')\n"
+  printf "1. ./minestart.sh start\n"
+  printf "2. ./minestart.sh stop\n"
+  printf "3. ./minestart.sh status)\n"
+  printf "4. ./minestart.sh restart\n"
+  printf "5. ./minestart.sh reload\n"
   printf "6. ./minestart.sh console (Opens the screen session with the minecraft server console)\n"
   printf "7. ./minestart.sh cmd [cmdname] {params} (Executes the given Minecraft Command with optional arguments)\n"
-  printf "8. ./minestart.sh help (Shows this help)\n\n"
+  printf "8. ./minestart.sh log (Opens the logfile as stream using tail -f)
+  printf "9. ./minestart.sh help (Shows this help)\n\n"
 
   printf "Questions? Ideas? Bugs? Contact me here: http://forum.mds-tv.de\n\n"
   
