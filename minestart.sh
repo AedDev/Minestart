@@ -17,6 +17,7 @@
 ########################
 
 SERVER_JAR="server.jar"
+LOG_FILE="server.log"   # Bukkit is: server.log, Spigot is: logs/latest.log
 
 RAM_MIN="1G" # M = Megabytes, G = Gigabytes
 RAM_MAX="4G" # M = Megabytes, G = Gigabytes
@@ -61,8 +62,7 @@ function warn {
 
 # Checks, if package 'screen' is installed
 #
-# 1 = Package is installed
-# 2 = Package is NOT installed
+# Returns: 1 if Package is installed, 0 if not
 function isScreenInstalled {
   screen -v &> /dev/null
   if [[ $? -eq 1 ]]; then
@@ -77,8 +77,9 @@ function isScreenInstalled {
   fi
 }
 
-# 1 = Server is running
-# 0 = Server is not running
+# Checks if the server is running
+#
+# Returns: 1 if the server is running or 0 if not
 function isRunning {
   # At first, check if there is already a screen session
   $(screen -ls | grep -q "$SCREEN_NAME")
@@ -92,6 +93,8 @@ function isRunning {
 
 # This function returns the PID of the screen session $SCREEN_NAME
 # (see definition at the top of this file)
+#
+# Returns: Screen PID
 function getScreenPid {
   local SCREEN_PID=$(screen -ls | grep "$SCREEN_NAME" | grep -oEi "([0-9]+)\." | tr -d '.')
   
@@ -223,6 +226,15 @@ function stopServer {
   done
 }
 
+# Opens the minecraft log as stream (tail follow)
+function openLog {
+  if [[ ! -f $LOG_FILE ]]; then
+    error "Logfile $LOG_FILE not found"
+  else
+    tail -f $LOG_FILE
+  fi
+}
+
 # Prints the help message
 function printHelp {
   # Set color to white
@@ -304,6 +316,10 @@ case "$1" in
   "say")
     doCmd "say" ${@:2}
     ;;
+  "log")
+    openLog
+    ;;
+
   #- Open the screen session (Minecraft server console)
   "console")
     if [[ $(isRunning) -eq 1 ]]; then
