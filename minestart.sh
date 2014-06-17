@@ -303,7 +303,7 @@ case "$1" in
     ;;
   "say")
     doCmd "say" ${@:2}
-
+    ;;
   #- Open the screen session (Minecraft server console)
   "console")
     if [[ $(isRunning) -eq 1 ]]; then
