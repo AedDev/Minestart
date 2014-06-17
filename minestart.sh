@@ -236,11 +236,15 @@ function removeWorld {
           mkdir "$OLD_WORLDS"
         fi
 
-        warn "Moving world $1 to $OLD_WORLDS"
+        if [[ ! -d "$OLD_WORLDS/$1" ]]; then
+          warn "Moving world $1 to $OLD_WORLDS"
 
-        mv "$1" "$OLD_WORLDS"
-        mv "$1_nether" "$OLD_WORLDS"
-        mv "$1_the_end" "$OLD_WORLDS"
+          mv "$1" "$OLD_WORLDS"
+          mv "$1_nether" "$OLD_WORLDS"
+          mv "$1_the_end" "$OLD_WORLDS"
+        else
+          error "Could not move world $1 to $OLD_WORLDS because the name is already existing in $OLD_WORLDS"
+        fi
       else
         warn "Removing world $1 (NO BACKUP!!)"
 
@@ -278,15 +282,17 @@ function printHelp {
   printf "~$ ./minestart.sh [start|stop|status|restart|reload|console|cmd|log|help] {params}\n\n"
   
   printf "Examples:\n"
-  printf "1. ./minestart.sh start\n"
-  printf "2. ./minestart.sh stop\n"
-  printf "3. ./minestart.sh status)\n"
-  printf "4. ./minestart.sh restart\n"
-  printf "5. ./minestart.sh reload\n"
-  printf "6. ./minestart.sh console (Opens the screen session with the minecraft server console)\n"
-  printf "7. ./minestart.sh cmd [cmdname] {params} (Executes the given Minecraft Command with optional arguments)\n"
-  printf "8. ./minestart.sh log (Opens the logfile as stream using tail -f)\n"
-  printf "9. ./minestart.sh help (Shows this help)\n\n"
+  printf "1)  ./minestart.sh start\n"
+  printf "2)  ./minestart.sh stop\n"
+  printf "3)  ./minestart.sh status)\n"
+  printf "4)  ./minestart.sh restart\n"
+  printf "5)  ./minestart.sh reload\n"
+  printf "6)  ./minestart.sh console (Open Minecraft Server console)\n"
+  printf "7)  ./minestart.sh cmd [cmdname] {params} (Executes Minecraft Command)\n"
+  printf "8)  ./minestart.sh log (Opens the logfile as stream using tail -f)\n"
+  printf "9)  ./minestart.sh say {message}\n"
+  printf "10) ./minestart.sh wdel {world_name} (Removes the given world WITH nether and end)\n"
+  printf "11) ./minestart.sh help (Shows this help)\n\n"
 
   printf "Questions? Ideas? Bugs? Contact me here: http://forum.mds-tv.de\n\n"
   
