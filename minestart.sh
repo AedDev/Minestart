@@ -233,12 +233,14 @@ function removeWorld {
     if [[ -d $1 ]]; then
       if [[ $SAVE_REMOVE_WORLDS -eq 1 ]]; then
         if [[ ! -d $OLD_WORLDS ]]; then
-          mkdir $OLD_WORLDS
+          mkdir "$OLD_WORLDS"
         fi
 
-        mv $1 $OLD_WORLDS
+        mv "$1" "$OLD_WORLDS"
+        mv "$1_nether" "$OLD_WORLDS"
+        mv "$1_the_end" "$OLD_WORLDS"
       else
-        rm -Rf $1
+        rm -Rf "$1" "$1_nether" "$1_the_end"
       fi
     else
       error "The world directory $1 is not existing"
