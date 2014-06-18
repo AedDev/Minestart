@@ -20,6 +20,7 @@ Planned features
 ----------------
 
 * Install Minecraft server (Example: ./minestart.sh install bukkit-1.7.9)
+* Command: remlogs (Removes the server.log file or logs/ directory)
 * Interactive console
 * Removing worlds
 * Backup Manager (create, list, restore, delete)
