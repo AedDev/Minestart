@@ -16,22 +16,26 @@
 ### GENERAL SETTINGS ###
 ########################
 
-SERVER_JAR="server.jar"
-LOG_FILE="server.log"   # Bukkit is: server.log, Spigot is: logs/latest.log
-SAVE_REMOVE_WORLDS=1    # If 1, worlds will not removed permanently but moved to $OLD_WORLDS directory
-OLD_WORLDS="old_worlds"
+###################
+### APPLICATION ###
+###################
+VERSION="1.2.0.0"
+BASE_DIR=$(dirname $0)
+
+# Server Configuration
+SERVER_JAR="$BASE_DIR/server.jar"
+LOG_FILE="$BASE_DIR/server.log"   # Bukkit is: server.log, Spigot is: $BASE_DIR/logs/latest.log
 
 RAM_MIN="1G" # M = Megabytes, G = Gigabytes
-RAM_MAX="4G" # M = Megabytes, G = Gigabytes
+RAM_MAX="2G" # M = Megabytes, G = Gigabytes
 
 SCREEN_NAME="MyServer"
 
 JDK_INSTALLED=0 # Set to 1, if you're using the JDK instead of JRE on your server
 
-###################
-### APPLICATION ###
-###################
-VERSION="1.2.0.0"
+# World Management configuration
+BACKUP_REMOVED_WORLDS=1
+WORLD_BACKUPS="$BASE_DIR/.world_backups"
 
 ###################
 ### COLOR CODES ###
@@ -228,27 +232,46 @@ function stopServer {
   done
 }
 
+# Creates a backup of the given world in the following format:
+# DD-MM-YYY_hh-mm-ss_$WORLD_NAME.tar.gz
+function backupWorld {
+  if [[ ! -z "${BASE_DIR}/$1"]]; then
+    # Build world backup name
+    local WORLD_BACKUP_DATE=$(date "+%d-%m-%y_%H-%M-%S")
+    local WORLD_BACKUP_FILE="${WORLD_BACKUP_DATE}_${1}.tar.gz"
+    local WORLD_BACKUP_FULLPATH="${WORLD_BACKUP_DIR}/${WORLD_BACKUP_FILE}"
+
+    if [[ ! -f "$WORLD_BACKUP_FULLPATH" ]]; then
+      info "Creating backup from world $1 ..."
+      tar -zcf "$WORLD_BACKUP_FULLPATH" "${BASE_DIR}/$1"
+      
+      # Check exit code for success
+      if [[ $? -eq 0 ]]; then
+        info "Successfully saved world to: $WORLD_BACKUP_FULLPATH"
+      else
+        error "World backup failed - please check read/write permissions."
+      fi
+    else
+      error "Could not create backup for world '$1': Backup already exists."
+    fi
+  else
+    error "No world name given"
+  fi
+}
+
 function removeWorld {
   if [[ ! -z $1 ]]; then
     if [[ -d $1 ]]; then
-      if [[ $SAVE_REMOVE_WORLDS -eq 1 ]]; then
-        if [[ ! -d $OLD_WORLDS ]]; then
-          mkdir "$OLD_WORLDS"
+      if [[ $BACKUP_REMOVED_WORLDS -eq 1 ]]; then
+        if [[ ! -d $WORLD_BACKUP_DIR ]]; then
+          mkdir "$WORLD_BACKUP_DIR"
         fi
 
-        if [[ ! -d "$OLD_WORLDS/$1" ]]; then
-          warn "Moving world $1 to $OLD_WORLDS"
-
-          mv "$1" "$OLD_WORLDS"
-          mv "$1_nether" "$OLD_WORLDS"
-          mv "$1_the_end" "$OLD_WORLDS"
-        else
-          error "Could not move world $1 to $OLD_WORLDS because the name is already existing in $OLD_WORLDS"
-        fi
+        backupWorld $1
       else
-        warn "Removing world $1 (NO BACKUP!!)"
+        info "Removing world $1 ..."
 
-        rm -Rf "$1" "$1_nether" "$1_the_end"
+        rm -Rf "$1"
       fi
     else
       error "The world directory $1 is not existing"
@@ -292,7 +315,8 @@ function printHelp {
   printf "8)  ./minestart.sh log (Opens the logfile as stream using tail -f)\n"
   printf "9)  ./minestart.sh say {message}\n"
   printf "10) ./minestart.sh wdel {world_name} (Removes the given world WITH nether and end)\n"
-  printf "11) ./minestart.sh help (Shows this help)\n\n"
+  printf "11) ./minestart.sh backup {world_name} (Creates a backup from given world)\n"
+  printf "12) ./minestart.sh help (Shows this help)\n\n"
 
   printf "Questions? Ideas? Bugs? Contact me here: http://forum.mds-tv.de\n\n"
   
@@ -357,6 +381,9 @@ case "$1" in
     ;;
   "wdel")
     removeWorld $2
+    ;;
+  "backup")
+    backupWorld $2
     ;;
 
   #- Open the screen session (Minecraft server console)
