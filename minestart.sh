@@ -35,7 +35,7 @@ JDK_INSTALLED=0 # Set to 1, if you're using the JDK instead of JRE on your serve
 
 # World Management configuration
 BACKUP_REMOVED_WORLDS=1
-WORLD_BACKUPS="$BASE_DIR/.world_backups"
+WORLD_BACKUP_DIR="$BASE_DIR/.world_backups"
 
 ###################
 ### COLOR CODES ###
