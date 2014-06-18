@@ -236,6 +236,11 @@ function stopServer {
 # DD-MM-YYY_hh-mm-ss_$WORLD_NAME.tar.gz
 function backupWorld {
   if [[ ! -z "${BASE_DIR}/$1" ]]; then
+    # Check backup folder existing
+    if [[ ! -f $WORLD_BACKUP_DIR ]]; then
+      mkdir $WORLD_BACKUP_DIR
+    fi
+
     # Build world backup name
     local WORLD_BACKUP_DATE=$(date "+%d-%m-%y_%H-%M-%S")
     local WORLD_BACKUP_FILE="${WORLD_BACKUP_DATE}_${1}.tar.gz"
