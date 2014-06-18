@@ -235,7 +235,7 @@ function stopServer {
 # Creates a backup of the given world in the following format:
 # DD-MM-YYY_hh-mm-ss_$WORLD_NAME.tar.gz
 function backupWorld {
-  if [[ ! -z "${BASE_DIR}/$1"]]; then
+  if [[ ! -z "${BASE_DIR}/$1" ]]; then
     # Build world backup name
     local WORLD_BACKUP_DATE=$(date "+%d-%m-%y_%H-%M-%S")
     local WORLD_BACKUP_FILE="${WORLD_BACKUP_DATE}_${1}.tar.gz"
