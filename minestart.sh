@@ -12,31 +12,6 @@
 #                                                                        #
 ##########################################################################
 
-########################
-### GENERAL SETTINGS ###
-########################
-
-###################
-### APPLICATION ###
-###################
-VERSION="1.2.0.0-dev"
-BASE_DIR=$(dirname $0)
-
-# Server Configuration
-SERVER_JAR="$BASE_DIR/server.jar"
-LOG_FILE="$BASE_DIR/server.log"   # Bukkit is: server.log, Spigot is: $BASE_DIR/logs/latest.log
-
-RAM_MIN="1G" # M = Megabytes, G = Gigabytes
-RAM_MAX="2G" # M = Megabytes, G = Gigabytes
-
-SCREEN_NAME="MyServer"
-
-JDK_INSTALLED=0 # Set to 1, if you're using the JDK instead of JRE on your server
-
-# World Management configuration
-BACKUP_REMOVED_WORLDS=1
-WORLD_BACKUP_DIR="$BASE_DIR/.world_backups"
-
 ###################
 ### COLOR CODES ###
 ###################
@@ -334,6 +309,16 @@ function printHelp {
 #####################
 ### FUNCTIONS END ###
 #####################
+
+# Load configuration
+if [[ -f ./minestart.cfg ]]; then
+  source ./minestart.cfg
+else
+  error "Could not find Minestart configuration file minestart.cfg"
+  error "Please create the configuration with all necessary entries"
+  error "You can download the default configuration from GitHub:"
+  error "https://github.com/morphesus/Minestart"
+fi
 
 # Check, if first Param is set, or print help if not
 if [[ -z $1 ]]; then
