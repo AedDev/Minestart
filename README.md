@@ -19,6 +19,11 @@ Tutorial
 Planned features
 ----------------
 
+* External configuration -> minestart.cfg
+  * Add new command: ./minestart.sh setup (Settings up basic configuration)
+  * Add new command: ./minestart.sh config [key] [value] (To set config values)
+  * Add aliases for config command (Like: ./minestart.sh setjar craftbukkit-dev.jar)
+
 * Install Minecraft server (Example: ./minestart.sh install bukkit-1.7.9)
 * Command: remlogs (Removes the server.log file or logs/ directory)
 * Interactive console
