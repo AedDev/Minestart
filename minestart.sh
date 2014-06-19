@@ -282,7 +282,7 @@ function printHelp {
   
   printf "Developed by Enrico Ludwig (Morph)\n\n"
   
-  printf "~$ ./minestart.sh [start|stop|status|restart|reload|console|cmd|log|help] {params}\n\n"
+  printf "~$ ./minestart.sh [start|stop|status|restart|reload|console|cmd|log|say|wdel|backup|help] {params}\n\n"
   
   printf "Examples:\n"
   printf "1)  ./minestart.sh start\n"
