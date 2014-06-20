@@ -319,6 +319,9 @@ else
   error "Please create the configuration with all necessary entries"
   error "You can download the default configuration from GitHub:"
   error "https://github.com/morphesus/Minestart"
+
+  # Exit due to config is neccessary!
+  return 1
 fi
 
 # Check, if first Param is set, or print help if not
