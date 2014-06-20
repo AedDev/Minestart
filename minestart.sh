@@ -312,6 +312,7 @@ function printHelp {
 
 # Load configuration
 if [[ -f ./minestart.cfg ]]; then
+  info "Loading configuration from minestart.cfg"
   source ./minestart.cfg
 else
   error "Could not find Minestart configuration file minestart.cfg"
