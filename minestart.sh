@@ -12,20 +12,6 @@
 #                                                                        #
 ##########################################################################
 
-###################
-### COLOR CODES ###
-###################
-COLOR_DEFAULT="\e[39m"
-COLOR_LGRAY="\e[37m"
-COLOR_RED="\e[31m"
-COLOR_YELLOW="\e[33m"
-COLOR_GREEN="\e[32m"
-COLOR_BLUE="\e[94m"
-
-#################
-### FUNCTIONS ###
-#################
-
 # Prints info message to shell
 function info {
   echo -e "$COLOR_LGRAY[${COLOR_BLUE}MINESTART${COLOR_LGRAY}][${COLOR_GREEN}INFO${COLOR_LGRAY}] $@$COLOR_DEFAULT"
