@@ -17,6 +17,12 @@ function info {
   echo -e "$COLOR_LGRAY[${COLOR_BLUE}MINESTART${COLOR_LGRAY}][${COLOR_GREEN}INFO${COLOR_LGRAY}] $@$COLOR_DEFAULT"
 }
 
+function debug {
+  if [[ $DEBUG -eq 1 ]]; then
+    echo -e "$COLOR_LGRAY[${COLOR_BLUE}MINESTART${COLOR_LGRAY}][${COLOR_GREEN}DEBUG${COLOR_LGRAY}] $@$COLOR_DEFAULT"
+  fi
+}
+
 # Prints error message to shell
 function error {
   echo -e "$COLOR_LGRAY[${COLOR_BLUE}MINESTART${COLOR_LGRAY}][${COLOR_RED}ERROR${COLOR_LGRAY}] $@$COLOR_DEFAULT"
