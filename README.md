@@ -126,13 +126,14 @@ any arguments.
 
 Now you're ready to _Minestart_! :D
 
-Planned features
-----------------
+Planned features (See also: Issues on GitHub)
+---------------------------------------------
 
 * External configuration -> minestart.cfg
   * Add new command: ./minestart.sh setup (Settings up basic configuration)
   * Add new command: ./minestart.sh config [key] [value] (To set config values)
   * Add aliases for config command (Like: ./minestart.sh setjar craftbukkit-dev.jar)
+  * Config not found -> Download config from GitHub (If possible, for corresponding version)
 
 * Install Minecraft server (Example: ./minestart.sh install bukkit-1.7.9)
 * Command: remlogs (Removes the server.log file or logs/ directory)
