@@ -4,7 +4,7 @@ Minestart - Control your MC Server!
 Requirements
 ------------
 
-* Linux systems (Debian, CentOS, ...)
+* __Linux__ systems (Debian, CentOS, ...) -> _MAC OSX is currently NOT supported!_
 * __bash__ is required (On Debian based systems: apt-get install bash)
 * __screen__ is required (On Debian based systems: apt-get install screen)
 * __tar__ is required to create backups
