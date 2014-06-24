@@ -14,7 +14,7 @@ the Raspberry Pi (But Minecraft is working very well on the PI :P)
 Tutorial
 --------
 
-[TUTORIAL COMING SOON]
+[TUTORIAL COMING SOON with Version 1.2.0.0]
 
 Planned features
 ----------------
