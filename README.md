@@ -26,8 +26,8 @@ clone the Git Repository.
 __Which way is better?__
 
 I recommend to clone the Git Repository into a seperate folder. Like this:
-* Your Minecraft Server is located here: /home/minecraft/MyServer
-* Your Minestart Script is located here: /home/minecraft/Minestart
+* Your Minecraft Server is located here: `/home/minecraft/MyServer`
+* Your Minestart Script is located here: `/home/minecraft/Minestart`
 
 Why this way is better? With git you can keep your Minestart up2date.
 So, if you have more than one server, you can simply link the Script to the
@@ -65,7 +65,7 @@ Minestart Script is located.
 __LOG_FILE__
 
 The next step is to set the location of minecrafts log file. Vanilla  or Bukkit
-Minecraft Server are saving the entire log to $`BASE_DIR/server.log. Spigot is
+Minecraft Server are saving the entire log to `$BASE_DIR/server.log`. Spigot is
 saving the log using _LogRotate_. So, you'll find the current log here:
 `$BASE_DIR/logs/latest.log``
 
