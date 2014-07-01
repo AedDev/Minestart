@@ -5,12 +5,19 @@
 ##########################################################################
 #                                                                        #
 # Author:      Enrico Ludwig (Morph)                                     #
-# Version:     1.2.0.0-dev (19. July 2014)                               #
+# Version:     1.2.0.0-dev (01. July 2014)                               #
 # License:     GNU GPL v2 (See: http://www.gnu.org/licenses/gpl-2.0.txt) #
 # Created:     11. May 2014                                              #
 # Description: Control your Minecraft Server                             #
 #                                                                        #
 ##########################################################################
+
+################################################################################
+###                             APPLICATION                                  ###
+################################################################################
+VERSION="1.2.0.0-dev"
+BASE_DIR=$(dirname $0)
+DEBUG=0
 
 # Prints info message to shell
 function info {
