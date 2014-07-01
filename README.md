@@ -1,5 +1,6 @@
 Minestart - Control your MC Server!
 ===================================
+#### Version: 1.2.0.0-dev
 
 Requirements
 ------------
@@ -25,8 +26,8 @@ clone the Git Repository.
 __Which way is better?__
 
 I recommend to clone the Git Repository into a seperate folder. Like this:
-* Your Minecraft Server is located here: /home/minecraft/MyServer
-* Your Minestart Script is located here: /home/minecraft/Minestart
+* Your Minecraft Server is located here: `/home/minecraft/MyServer`
+* Your Minestart Script is located here: `/home/minecraft/Minestart`
 
 Why this way is better? With git you can keep your Minestart up2date.
 So, if you have more than one server, you can simply link the Script to the
@@ -64,7 +65,7 @@ Minestart Script is located.
 __LOG_FILE__
 
 The next step is to set the location of minecrafts log file. Vanilla  or Bukkit
-Minecraft Server are saving the entire log to $`BASE_DIR/server.log. Spigot is
+Minecraft Server are saving the entire log to `$BASE_DIR/server.log`. Spigot is
 saving the log using _LogRotate_. So, you'll find the current log here:
 `$BASE_DIR/logs/latest.log``
 
@@ -128,19 +129,7 @@ Now you're ready to _Minestart_! :D
 
 Planned features (See also: Issues on GitHub)
 ---------------------------------------------
-
-* External configuration -> minestart.cfg
-  * Add new command: ./minestart.sh setup (Settings up basic configuration)
-  * Add new command: ./minestart.sh config [key] [value] (To set config values)
-  * Add aliases for config command (Like: ./minestart.sh setjar craftbukkit-dev.jar)
-  * Config not found -> Download config from GitHub (If possible, for corresponding version)
-
-* Install Minecraft server (Example: ./minestart.sh install bukkit-1.7.9)
-* Command: remlogs (Removes the server.log file or logs/ directory)
-* Interactive console
-* Removing worlds
-* Backup Manager (create, list, restore, delete)
-* More default server commands (Such as: say, msg, tp, ...)
+See issues: https://github.com/morphesus/Minestart/issues
 
 _If you have some fresh ideas, please inform me via mail: [admin@mds-tv.de](mailto:admin@mds-tv "Mail the developer")_
 
