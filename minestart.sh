@@ -65,8 +65,14 @@ function isRunning {
   $(screen -ls | grep -q "$SCREEN_NAME")
   
   if [[ $? -eq 0 ]]; then
+    # Success
     echo 1
   else
+    # Failure, check if there is a PID file
+    if [[ -f "${SERVER_JAR}.pid" ]]; then
+      warn "PID file was found, maybe the server was crashed"
+    fi
+
     echo 0
   fi
 }
