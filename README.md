@@ -10,7 +10,7 @@ Requirements
 * __screen__ is required (On Debian based systems: apt-get install screen)
 
 The Script is also working on ARM devices, such as an Tablet PC with Android or
-the Raspberry Pi (But Minecraft is working very well on the PI :P)
+the Raspberry Pi (But Minecraft is working not very well on the PI :P)
 
 Tutorial
 --------
