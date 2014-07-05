@@ -127,20 +127,9 @@ any arguments.
 
 Now you're ready to _Minestart_! :D
 
-Planned features
-----------------
-
-* External configuration -> minestart.cfg
-  * Add new command: ./minestart.sh setup (Settings up basic configuration)
-  * Add new command: ./minestart.sh config [key] [value] (To set config values)
-  * Add aliases for config command (Like: ./minestart.sh setjar craftbukkit-dev.jar)
-
-* Install Minecraft server (Example: ./minestart.sh install bukkit-1.7.9)
-* Command: remlogs (Removes the server.log file or logs/ directory)
-* Interactive console
-* Removing worlds
-* Backup Manager (create, list, restore, delete)
-* More default server commands (Such as: say, msg, tp, ...)
+Planned features (See also: Issues on GitHub)
+---------------------------------------------
+See issues: https://github.com/morphesus/Minestart/issues
 
 _If you have some fresh ideas, please inform me via mail: [admin@mds-tv.de](mailto:admin@mds-tv "Mail the developer")_
 

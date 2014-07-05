@@ -5,30 +5,29 @@
 ##########################################################################
 #                                                                        #
 # Author:      Enrico Ludwig (Morph)                                     #
-# Version:     1.2.0.0-dev (24. July 2014)                               #
+# Version:     1.2.0.0-dev (01. July 2014)                               #
 # License:     GNU GPL v2 (See: http://www.gnu.org/licenses/gpl-2.0.txt) #
 # Created:     11. May 2014                                              #
 # Description: Control your Minecraft Server                             #
 #                                                                        #
 ##########################################################################
 
-###################
-### COLOR CODES ###
-###################
-COLOR_DEFAULT="\e[39m"
-COLOR_LGRAY="\e[37m"
-COLOR_RED="\e[31m"
-COLOR_YELLOW="\e[33m"
-COLOR_GREEN="\e[32m"
-COLOR_BLUE="\e[94m"
-
-#################
-### FUNCTIONS ###
-#################
+################################################################################
+###                             APPLICATION                                  ###
+################################################################################
+VERSION="1.2.0.0-dev"
+BASE_DIR=$(dirname $0)
+DEBUG=0
 
 # Prints info message to shell
 function info {
   echo -e "$COLOR_LGRAY[${COLOR_BLUE}MINESTART${COLOR_LGRAY}][${COLOR_GREEN}INFO${COLOR_LGRAY}] $@$COLOR_DEFAULT"
+}
+
+function debug {
+  if [[ $DEBUG -eq 1 ]]; then
+    echo -e "$COLOR_LGRAY[${COLOR_BLUE}MINESTART${COLOR_LGRAY}][${COLOR_GREEN}DEBUG${COLOR_LGRAY}] $@$COLOR_DEFAULT"
+  fi
 }
 
 # Prints error message to shell
