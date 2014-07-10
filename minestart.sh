@@ -217,6 +217,7 @@ function stopServer {
 function backupWorld {
 	if [[ -z "$1" ]]; then
     error "No world name given"
+		return
   fi
 
 	# Check backup folder existing
