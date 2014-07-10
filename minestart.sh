@@ -65,8 +65,14 @@ function isRunning {
   $(screen -ls | grep -q "$SCREEN_NAME")
   
   if [[ $? -eq 0 ]]; then
+    # Success
     echo 1
   else
+    # Failure, check if there is a PID file
+    if [[ -f "${SERVER_JAR}.pid" ]]; then
+      warn "PID file was found, maybe the server was crashed"
+    fi
+
     echo 0
   fi
 }
@@ -209,9 +215,13 @@ function stopServer {
 # Creates a backup of the given world in the following format:
 # DD-MM-YYY_hh-mm-ss_$WORLD_NAME.tar.gz
 function backupWorld {
+	if [[ -z "$1" ]]; then
+    error "No world name given"
+  fi
+
   if [[ ! -z "${BASE_DIR}/$1" ]]; then
     # Check backup folder existing
-    if [[ ! -f $WORLD_BACKUP_DIR ]]; then
+    if [[ ! -d $WORLD_BACKUP_DIR ]]; then
       mkdir $WORLD_BACKUP_DIR
     fi
 
