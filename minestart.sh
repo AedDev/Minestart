@@ -215,6 +215,10 @@ function stopServer {
 # Creates a backup of the given world in the following format:
 # DD-MM-YYY_hh-mm-ss_$WORLD_NAME.tar.gz
 function backupWorld {
+	if [[ -z "$1" ]]; then
+    error "No world name given"
+  fi
+
   if [[ ! -z "${BASE_DIR}/$1" ]]; then
     # Check backup folder existing
     if [[ ! -d $WORLD_BACKUP_DIR ]]; then
