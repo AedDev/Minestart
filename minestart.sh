@@ -219,33 +219,29 @@ function backupWorld {
     error "No world name given"
   fi
 
-  if [[ ! -z "${BASE_DIR}/$1" ]]; then
-    # Check backup folder existing
-    if [[ ! -d $WORLD_BACKUP_DIR ]]; then
-      mkdir $WORLD_BACKUP_DIR
-    fi
+	# Check backup folder existing
+	if [[ ! -d $WORLD_BACKUP_DIR ]]; then
+		mkdir $WORLD_BACKUP_DIR
+	fi
 
-    # Build world backup name
-    local WORLD_BACKUP_DATE=$(date "+%d-%m-%y_%H-%M-%S")
-    local WORLD_BACKUP_FILE="${WORLD_BACKUP_DATE}_${1}.tar.gz"
-    local WORLD_BACKUP_FULLPATH="${WORLD_BACKUP_DIR}/${WORLD_BACKUP_FILE}"
+	# Build world backup name
+	local WORLD_BACKUP_DATE=$(date "+%d-%m-%y_%H-%M-%S")
+	local WORLD_BACKUP_FILE="${WORLD_BACKUP_DATE}_${1}.tar.gz"
+	local WORLD_BACKUP_FULLPATH="${WORLD_BACKUP_DIR}/${WORLD_BACKUP_FILE}"
 
-    if [[ ! -f "$WORLD_BACKUP_FULLPATH" ]]; then
-      info "Creating backup from world $1 ..."
-      tar -zcf "$WORLD_BACKUP_FULLPATH" "${BASE_DIR}/$1"
-      
-      # Check exit code for success
-      if [[ $? -eq 0 ]]; then
-        info "Successfully saved world to: $WORLD_BACKUP_FULLPATH"
-      else
-        error "World backup failed - please check read/write permissions."
-      fi
-    else
-      error "Could not create backup for world '$1': Backup already exists."
-    fi
-  else
-    error "No world name given"
-  fi
+	if [[ ! -f "$WORLD_BACKUP_FULLPATH" ]]; then
+		info "Creating backup from world $1 ..."
+		tar -zcf "$WORLD_BACKUP_FULLPATH" "${BASE_DIR}/$1"
+
+		# Check exit code for success
+		if [[ $? -eq 0 ]]; then
+			info "Successfully saved world to: $WORLD_BACKUP_FULLPATH"
+		else
+			error "World backup failed - please check read/write permissions."
+		fi
+	else
+		error "Could not create backup for world '$1': Backup already exists."
+	fi
 }
 
 function removeWorld {
