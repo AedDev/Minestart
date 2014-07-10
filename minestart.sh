@@ -217,7 +217,7 @@ function stopServer {
 function backupWorld {
   if [[ ! -z "${BASE_DIR}/$1" ]]; then
     # Check backup folder existing
-    if [[ ! -f $WORLD_BACKUP_DIR ]]; then
+    if [[ ! -d $WORLD_BACKUP_DIR ]]; then
       mkdir $WORLD_BACKUP_DIR
     fi
 
