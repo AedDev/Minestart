@@ -5,7 +5,7 @@
 ##########################################################################
 #                                                                        #
 # Author:      Enrico Ludwig (Morph)                                     #
-# Version:     1.2.0.1-dev (10. July 2014)                               #
+# Version:     1.2.0.2-dev (16. July 2014)                               #
 # License:     GNU GPL v2 (See: http://www.gnu.org/licenses/gpl-2.0.txt) #
 # Created:     11. May 2014                                              #
 # Description: Control your Minecraft Server                             #
@@ -61,19 +61,24 @@ function isScreenInstalled {
 #
 # Returns: 1 if the server is running or 0 if not
 function isRunning {
-  # Get PID file
+  	# Get PID file
 	if [[ -f "${SERVER_JAR}.pid" ]]; then
 		# Read PID from file
 		PID=$(cat "${SERVER_JAR}.pid")
 
 		# Check PID is alive
-		if [ kill -0 $PID ]; then
+		kill -0 $PID &> /dev/null
+		ALIVE=$?
+
+		if [[ $ALIVE -eq 0 ]]; then
 			echo 1
 		else
+			# PID file found, but server not running -> remove PID file
+			rm "${SERVER_JAR}.pid"
 			echo 0
 		fi
 	else
-		error "Could not find ${SERVER_JAR}.pid - maybe your server crashed?"
+		echo 0
 	fi
 }
 
@@ -180,34 +185,25 @@ function stopServer {
   
   if [[ $(isRunning) -eq 0 ]]; then
     warn "Server is NOT running!"
-    rm -Rf "$SERVER_JAR.pid"
+    rm -Rf "${SERVER_JAR}.pid"
     
     return
-  else
-    doCmd "stop"
   fi
-  
+
+  # Send Stop command
+  doCmd "stop"
+
   local TRIES=0 # After 5 tries, error will be thrown
-  while sleep 1
+  
+  while [[ $(isRunning) -eq 1 ]]; do
     info "Shutting down ..."
     TRIES=$((TRIES+1))
-    
+
+    sleep 1
+
     if [[ $TRIES -ge 5 ]]; then
-      # Check running again and give feedback
-      if [[ $(isRunning) -eq 1 ]]; then
         error "Stopping server failed! You should check the server log files"
-        return
-      else
-        info "Server was stopped successfully!"
-        return
-      fi
-      
-      return
-    fi
-  do
-    # Only if the server is offline, remove the PID file
-    if [[ $(isRunning) -eq 0 ]]; then
-      rm -Rf "$SERVER_JAR.pid"
+    	return
     fi
   done
 }
