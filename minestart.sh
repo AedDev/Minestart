@@ -61,20 +61,20 @@ function isScreenInstalled {
 #
 # Returns: 1 if the server is running or 0 if not
 function isRunning {
-  # At first, check if there is already a screen session
-  $(screen -ls | grep -q "$SCREEN_NAME")
-  
-  if [[ $? -eq 0 ]]; then
-    # Success
-    echo 1
-  else
-    # Failure, check if there is a PID file
-    if [[ -f "${SERVER_JAR}.pid" ]]; then
-      warn "PID file was found, maybe the server was crashed"
-    fi
+  # Get PID file
+	if [[ -f "${SERVER_JAR}.pid" ]]; then
+		# Read PID from file
+		PID=$(cat "${SERVER_JAR}.pid")
 
-    echo 0
-  fi
+		# Check PID is alive
+		if [[ kill -0 $PID ]]; then
+			echo 1
+		else
+			echo 0
+		fi
+	else
+		error "Could not find ${SERVER_JAR}.pid - maybe your server crashed?"
+	fi
 }
 
 # This function returns the PID of the screen session $SCREEN_NAME
