@@ -67,7 +67,7 @@ function isRunning {
 		PID=$(cat "${SERVER_JAR}.pid")
 
 		# Check PID is alive
-		if [[ kill -0 $PID ]]; then
+		if [ kill -0 $PID ]; then
 			echo 1
 		else
 			echo 0
