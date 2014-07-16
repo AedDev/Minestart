@@ -5,7 +5,7 @@
 ##########################################################################
 #                                                                        #
 # Author:      Enrico Ludwig (Morph)                                     #
-# Version:     1.2.0.2-dev (16. July 2014)                               #
+# Version:     1.2.0.3-dev (16. July 2014)                               #
 # License:     GNU GPL v2 (See: http://www.gnu.org/licenses/gpl-2.0.txt) #
 # Created:     11. May 2014                                              #
 # Description: Control your Minecraft Server                             #
