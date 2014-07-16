@@ -361,20 +361,25 @@ case "$1" in
       info "The Server with screen name '$SCREEN_NAME' is NOT running!"
     fi
     ;;
-
-  #- Execute server internal commands
   "cmd")
     doCmd ${@:2}
-    ;;
-  "reload")
-    doCmd "reload"
-    ;;
-  "say")
-    doCmd "say" ${@:2}
     ;;
   "log")
     openLog
     ;;
+
+  #- Execute server internal commands
+  "say")
+    doCmd "say" ${@:2}
+    ;;
+  "reload")
+    doCmd "reload"
+    ;;
+	"whitelist")
+		doCmd "whitelist" ${@:2}
+		;;
+
+	#- World Management Commands
   "wdel")
     removeWorld $2
     ;;
@@ -391,7 +396,7 @@ case "$1" in
     else
       error "The Server with screen name '$SCREEN_NAME' is NOT running!"
     fi
-    ;;
+	;;
 
   #- Get help
   "help")
