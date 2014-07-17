@@ -1,6 +1,6 @@
 Minestart - Control your MC Server!
 ===================================
-#### Version: 1.2.0.5
+#### Version: 1.3.0.0
 
 Requirements
 ------------
