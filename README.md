@@ -12,7 +12,7 @@ Requirements
 * _Optional:_ __git__ if you want to clone the Minestart repository
 
 The Script is also working on ARM devices, such as an Tablet PC with Android or
-the Raspberry Pi (But Minecraft isn't working as well on the Pi :P)
+the Raspberry Pi (But Minecraft is working not very well on the PI :P)
 
 Tutorial
 --------
