@@ -5,48 +5,28 @@
 ##########################################################################
 #                                                                        #
 # Author:      Enrico Ludwig (Morph)                                     #
-# Version:     1.1.1.0 (12. May 2014)                                    #
+# Version:     1.2.0.5 (17. July 2014)                                   #
 # License:     GNU GPL v2 (See: http://www.gnu.org/licenses/gpl-2.0.txt) #
 # Created:     11. May 2014                                              #
 # Description: Control your Minecraft Server                             #
 #                                                                        #
 ##########################################################################
 
-########################
-### GENERAL SETTINGS ###
-########################
-
-SERVER_JAR="server.jar"
-
-RAM_MIN="1G" # M = Megabytes, G = Gigabytes
-RAM_MAX="4G" # M = Megabytes, G = Gigabytes
-
-SCREEN_NAME="MyServer"
-
-JDK_INSTALLED=0 # Set to 1, if you're using the JDK instead of JRE on your server
-
-###################
-### APPLICATION ###
-###################
-VERSION="1.1.1.0"
-
-###################
-### COLOR CODES ###
-###################
-COLOR_DEFAULT="\e[39m"
-COLOR_LGRAY="\e[37m"
-COLOR_RED="\e[31m"
-COLOR_YELLOW="\e[33m"
-COLOR_GREEN="\e[32m"
-COLOR_BLUE="\e[94m"
-
-#################
-### FUNCTIONS ###
-#################
+################################################################################
+###                             APPLICATION                                  ###
+################################################################################
+VERSION="1.2.0.5"
+SCRIPT_DIR=$(dirname $0)
 
 # Prints info message to shell
 function info {
   echo -e "$COLOR_LGRAY[${COLOR_BLUE}MINESTART${COLOR_LGRAY}][${COLOR_GREEN}INFO${COLOR_LGRAY}] $@$COLOR_DEFAULT"
+}
+
+function debug {
+  if [[ $DEBUG -eq 1 ]]; then
+    echo -e "$COLOR_LGRAY[${COLOR_BLUE}MINESTART${COLOR_LGRAY}][${COLOR_GREEN}DEBUG${COLOR_LGRAY}] $@$COLOR_DEFAULT"
+  fi
 }
 
 # Prints error message to shell
@@ -61,8 +41,7 @@ function warn {
 
 # Checks, if package 'screen' is installed
 #
-# 1 = Package is installed
-# 2 = Package is NOT installed
+# Returns: 1 if Package is installed, 0 if not
 function isScreenInstalled {
   screen -v &> /dev/null
   if [[ $? -eq 1 ]]; then
@@ -77,21 +56,35 @@ function isScreenInstalled {
   fi
 }
 
-# 1 = Server is running
-# 0 = Server is not running
+# Checks if the server is running
+#
+# Returns: 1 if the server is running or 0 if not
 function isRunning {
-  # At first, check if there is already a screen session
-  $(screen -ls | grep -q "$SCREEN_NAME")
-  
-  if [[ $? -eq 0 ]]; then
-    echo 1
-  else
-    echo 0
-  fi
+  	# Get PID file
+	if [[ -f "${SERVER_JAR}.pid" ]]; then
+		# Read PID from file
+		PID=$(cat "${SERVER_JAR}.pid")
+
+		# Check PID is alive
+		kill -0 $PID &> /dev/null
+		ALIVE=$?
+
+		if [[ $ALIVE -eq 0 ]]; then
+			echo 1
+		else
+			# PID file found, but server not running -> remove PID file
+			rm "${SERVER_JAR}.pid"
+			echo 0
+		fi
+	else
+		echo 0
+	fi
 }
 
 # This function returns the PID of the screen session $SCREEN_NAME
 # (see definition at the top of this file)
+#
+# Returns: Screen PID
 function getScreenPid {
   local SCREEN_PID=$(screen -ls | grep "$SCREEN_NAME" | grep -oEi "([0-9]+)\." | tr -d '.')
   
@@ -191,36 +184,92 @@ function stopServer {
   
   if [[ $(isRunning) -eq 0 ]]; then
     warn "Server is NOT running!"
-    rm -Rf "$SERVER_JAR.pid"
+    rm -Rf "${SERVER_JAR}.pid"
     
     return
-  else
-    doCmd "stop"
   fi
-  
+
+  # Send Stop command
+  doCmd "stop"
+
   local TRIES=0 # After 5 tries, error will be thrown
-  while sleep 1
+  
+  while [[ $(isRunning) -eq 1 ]]; do
     info "Shutting down ..."
     TRIES=$((TRIES+1))
-    
+
+    sleep 1
+
     if [[ $TRIES -ge 5 ]]; then
-      # Check running again and give feedback
-      if [[ $(isRunning) -eq 1 ]]; then
         error "Stopping server failed! You should check the server log files"
-        return
-      else
-        info "Server was stopped successfully!"
-        return
-      fi
-      
-      return
-    fi
-  do
-    # Only if the server is offline, remove the PID file
-    if [[ $(isRunning) -eq 0 ]]; then
-      rm -Rf "$SERVER_JAR.pid"
+    	return
     fi
   done
+}
+
+# Creates a backup of the given world in the following format:
+# DD-MM-YYY_hh-mm-ss_$WORLD_NAME.tar.gz
+function backupWorld {
+	if [[ -z "$1" ]]; then
+    error "No world name given"
+		return
+  fi
+
+	# Check backup folder existing
+	if [[ ! -d $WORLD_BACKUP_DIR ]]; then
+		mkdir $WORLD_BACKUP_DIR
+	fi
+
+	# Build world backup name
+	local WORLD_BACKUP_DATE=$(date "+%d-%m-%y_%H-%M-%S")
+	local WORLD_BACKUP_FILE="${WORLD_BACKUP_DATE}_${1}.tar.gz"
+	local WORLD_BACKUP_FULLPATH="${WORLD_BACKUP_DIR}/${WORLD_BACKUP_FILE}"
+
+	if [[ ! -f "$WORLD_BACKUP_FULLPATH" ]]; then
+		info "Creating backup from world $1 ..."
+		tar -zcf "$WORLD_BACKUP_FULLPATH" "${BASE_DIR}/$1"
+
+		# Check exit code for success
+		if [[ $? -eq 0 ]]; then
+			info "Successfully saved world to: $WORLD_BACKUP_FULLPATH"
+		else
+			error "World backup failed - please check read/write permissions."
+		fi
+	else
+		error "Could not create backup for world '$1': Backup already exists."
+	fi
+}
+
+function removeWorld {
+  if [[ ! -z $1 ]]; then
+    if [[ -d $1 ]]; then
+      if [[ $BACKUP_REMOVED_WORLDS -eq 1 ]]; then
+        if [[ ! -d $WORLD_BACKUP_DIR ]]; then
+          mkdir "$WORLD_BACKUP_DIR"
+        fi
+
+        backupWorld $1
+      else
+        info "Removing world $1 ..."
+
+        rm -Rf "$1"
+      fi
+    else
+      error "The world directory $1 is not existing"
+    fi
+  else
+    error "No world name given"
+  fi
+}
+
+# Opens the minecraft log as stream (tail follow)
+function openLog {
+  if [[ ! -f $LOG_FILE ]]; then
+    error "Logfile $LOG_FILE not found"
+    error "If you're using spigot, set logs/latest.log as LOG_FILE"
+  else
+    tail -f $LOG_FILE
+  fi
 }
 
 # Prints the help message
@@ -234,17 +283,22 @@ function printHelp {
   
   printf "Developed by Enrico Ludwig (Morph)\n\n"
   
-  printf "~$ minestart [start|stop|restart|reload|help|status|(minecraft command)] [(minecraft params)]\n\n"
+  printf "~$ ./minestart.sh [start|stop|status|restart|reload|console|cmd|log|say|wdel|backup|help] {params}\n\n"
   
   printf "Examples:\n"
-  printf "1. ./minestart.sh start (Starts the server from the current directory)\n"
-  printf "2. ./minestart.sh stop (Stopps the server from the current directory)\n"
-  printf "3. ./minestart.sh status (Prints the server status (online / offline))\n"
-  printf "4. ./minestart.sh restart (Restarts the server from the current directory)\n"
-  printf "5. ./minestart.sh reload (Reloads the server (alias for 'cmd reload')\n"
-  printf "6. ./minestart.sh console (Opens the screen session with the minecraft server console)\n"
-  printf "7. ./minestart.sh cmd [cmdname] {params} (Executes the given Minecraft Command with optional arguments)\n"
-  printf "8. ./minestart.sh help (Shows this help)\n\n"
+  printf "1)  ./minestart.sh start\n"
+  printf "2)  ./minestart.sh stop\n"
+  printf "3)  ./minestart.sh status\n"
+  printf "4)  ./minestart.sh restart\n"
+  printf "5)  ./minestart.sh reload\n"
+  printf "6)  ./minestart.sh console (Open Minecraft Server console)\n"
+  printf "7)  ./minestart.sh cmd [cmdname] {params} (Executes Minecraft Command)\n"
+  printf "8)  ./minestart.sh log (Opens the logfile as stream using tail -f)\n"
+  printf "9)  ./minestart.sh say [message]\n"
+  printf "10) ./minestart.sh whitelist [add|remove|reload] {player}\n"
+  printf "11) ./minestart.sh wdel [world_name] (Removes the given world WITH nether and end)\n"
+  printf "12) ./minestart.sh backup [world_name] (Creates a backup from given world)\n"
+  printf "13) ./minestart.sh help (Shows this help)\n\n"
 
   printf "Questions? Ideas? Bugs? Contact me here: http://forum.mds-tv.de\n\n"
   
@@ -257,6 +311,20 @@ function printHelp {
 #####################
 ### FUNCTIONS END ###
 #####################
+
+# Load configuration
+if [[ -f "${SCRIPT_DIR}/minestart.cfg" ]]; then
+  info "Loading configuration from ${SCRIPT_DIR}/minestart.cfg"
+  source "${SCRIPT_DIR}/minestart.cfg"
+else
+  error "Could not find Minestart configuration file minestart.cfg"
+  error "Please create the configuration with all necessary entries"
+  error "You can download the default configuration from GitHub:"
+  error "https://github.com/morphesus/Minestart"
+
+  # Exit due to config is neccessary!
+  return 1
+fi
 
 # Check, if first Param is set, or print help if not
 if [[ -z $1 ]]; then
@@ -293,13 +361,30 @@ case "$1" in
       info "The Server with screen name '$SCREEN_NAME' is NOT running!"
     fi
     ;;
-
-  #- Execute server internal commands
   "cmd")
     doCmd ${@:2}
     ;;
+  "log")
+    openLog
+    ;;
+
+  #- Execute server internal commands
+  "say")
+    doCmd "say" ${@:2}
+    ;;
   "reload")
     doCmd "reload"
+    ;;
+	"whitelist")
+		doCmd "whitelist" ${@:2}
+		;;
+
+	#- World Management Commands
+  "wdel")
+    removeWorld $2
+    ;;
+  "backup")
+    backupWorld $2
     ;;
 
   #- Open the screen session (Minecraft server console)
@@ -311,7 +396,7 @@ case "$1" in
     else
       error "The Server with screen name '$SCREEN_NAME' is NOT running!"
     fi
-    ;;
+	;;
 
   #- Get help
   "help")
