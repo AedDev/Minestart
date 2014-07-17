@@ -315,7 +315,7 @@ function printHelp {
 # Load configuration
 if [[ -f "${SCRIPT_DIR}/minestart.cfg" ]]; then
   info "Loading configuration from ${SCRIPT_DIR}/minestart.cfg"
-  source ./minestart.cfg
+  source "${SCRIPT_DIR}/minestart.cfg"
 else
   error "Could not find Minestart configuration file minestart.cfg"
   error "Please create the configuration with all necessary entries"
