@@ -16,8 +16,7 @@
 ###                             APPLICATION                                  ###
 ################################################################################
 VERSION="1.2.0.4-dev"
-BASE_DIR=$(dirname $0)
-DEBUG=0
+SCRIPT_DIR=$(dirname $0)
 
 # Prints info message to shell
 function info {
@@ -314,8 +313,8 @@ function printHelp {
 #####################
 
 # Load configuration
-if [[ -f ./minestart.cfg ]]; then
-  info "Loading configuration from minestart.cfg"
+if [[ -f "${SCRIPT_DIR}/minestart.cfg" ]]; then
+  info "Loading configuration from ${SCRIPT_DIR}/minestart.cfg"
   source ./minestart.cfg
 else
   error "Could not find Minestart configuration file minestart.cfg"
