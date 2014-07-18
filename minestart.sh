@@ -109,6 +109,10 @@ function doCmd {
 function openConsole {
   if [[ $(isRunning) -eq 1 ]]; then
     screen -r "$SCREEN_NAME"
+
+		if [[ $? -eq 1 ]]; then
+			error "Could not open screen session - maybe it is opened by another user?"
+		fi
   else
     error "There is no Server running with Screen Name '$SCREEN_NAME'"
   fi
