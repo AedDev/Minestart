@@ -205,6 +205,8 @@ function stopServer {
     	return
     fi
   done
+
+	rm -Rf "${SERVER_JAR}.pid"
 }
 
 # Creates a backup of the given world in the following format:
