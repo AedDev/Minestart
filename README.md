@@ -1,6 +1,6 @@
 Minestart - Control your MC Server!
 ===================================
-#### Stable Version: [1.2.0.5](https://github.com/morphesus/Minestart/releases/tag/v1.2.0.5 "Stable version")
+#### Stable Version: [1.2.0.6](https://github.com/morphesus/Minestart/releases/tag/v1.2.0.6 "Stable version")
 ###### Development Version: [1.3.0.0](https://github.com/morphesus/Minestart/tree/1.3-dev "Development version")
 
 Requirements
