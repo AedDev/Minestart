@@ -62,6 +62,8 @@ function isScreenInstalled {
 function isRunning {
   	# Get PID file
 	if [[ -f "${SERVER_JAR}.pid" ]]; then
+		debug "Server pid file found ... Check if server is running"
+
 		# Read PID from file
 		PID=$(cat "${SERVER_JAR}.pid")
 
