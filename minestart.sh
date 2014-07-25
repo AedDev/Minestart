@@ -145,6 +145,7 @@ function startServer {
         # Enable multiusermode if set
         if [[ $SCREEN_MULTIUSER -eq 1 ]]; then
           # TODO -> Implement multiuser support
+          ;;
         fi
       else
         error "Could not start Minecraft Server (Error Code: $ERR_CODE)"
