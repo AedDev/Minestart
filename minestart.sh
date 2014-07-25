@@ -374,6 +374,12 @@ case "$1" in
   "log")
     openLog
     ;;
+  "fix-console")
+    if [[ $(isRunning) -eq 1 ]]; then
+      info "Fixing screen session with PID $(getScreenPid)"
+      screen -d "$(getScreenPid).${SCREEN_NAME}"
+    fi
+    ;;
 
   #- Execute server internal commands
   "say")
