@@ -141,12 +141,6 @@ function startServer {
         info "Using JAR File $SERVER_JAR"
         info "Process ID: $PID"
         info "Server started successfully!"
-
-        # Enable multiusermode if set
-        if [[ $SCREEN_MULTIUSER -eq 1 ]]; then
-          # TODO -> Implement multiuser support
-          ;;
-        fi
       else
         error "Could not start Minecraft Server (Error Code: $ERR_CODE)"
         
