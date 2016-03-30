@@ -60,7 +60,9 @@ function isScreenInstalled {
 #
 # Returns: 1 if the server is running or 0 if not
 function isRunning {
-  	# Get PID file
+  local _running=0
+  
+	# Get PID file
 	if [[ -f "${SERVER_JAR}.pid" ]]; then
 		# Read PID from file
 		PID=$(cat "${SERVER_JAR}.pid")
@@ -70,15 +72,14 @@ function isRunning {
 		ALIVE=$?
 
 		if [[ $ALIVE -eq 0 ]]; then
-			echo 1
+			$_running=1
 		else
 			# PID file found, but server not running -> remove PID file
 			rm "${SERVER_JAR}.pid"
-			echo 0
 		fi
-	else
-		echo 0
 	fi
+	
+	echo $_running
 }
 
 # This function returns the PID of the screen session $SCREEN_NAME
@@ -369,6 +370,12 @@ case "$1" in
   "log")
     openLog
     ;;
+   "fix-console")
+     if [[ $(isRunning) -eq 1 ]]; then
+       info "Fixing screen session with PID $(getScreenPid)"
+       screen -d "$(getScreenPid).${SCREEN_NAME}"
+     fi
+     ;;
 
   #- Execute server internal commands
   "say")
