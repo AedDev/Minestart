@@ -72,7 +72,7 @@ function isRunning {
 		ALIVE=$?
 
 		if [[ $ALIVE -eq 0 ]]; then
-			$_running=1
+			_running=1
 		else
 			# PID file found, but server not running -> remove PID file
 			rm "${SERVER_JAR}.pid"
