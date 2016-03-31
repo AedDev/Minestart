@@ -1,16 +1,16 @@
 #!/bin/bash
 
-##########################################################################
-################################ ABOUT ###################################
-##########################################################################
-#                                                                        #
-# Author:      Enrico Ludwig (Morph)                                     #
-# Version:     1.2.0.6 (19. July 2014)                                   #
-# License:     GNU GPL v2 (See: http://www.gnu.org/licenses/gpl-2.0.txt) #
-# Created:     11. May 2014                                              #
-# Description: Control your Minecraft Server                             #
-#                                                                        #
-##########################################################################
+################################################################################
+################################### ABOUT ######################################
+################################################################################
+#                                                                              #
+# Author:      Enrico Ludwig (Morph)                                           #
+# Version:     1.2.1.0-dev (31. March 2016)                                    #
+# License:     GNU GPL v2 (See: http://www.gnu.org/licenses/gpl-2.0.txt)       #
+# Created:     11. May 2014                                                    #
+# Description: Control your Minecraft Server                                   #
+#                                                                              #
+################################################################################
 
 ################################################################################
 ###                             APPLICATION                                  ###
@@ -62,24 +62,24 @@ function isScreenInstalled {
 function isRunning {
   local _running=0
   
-	# Get PID file
-	if [[ -f "${SERVER_JAR}.pid" ]]; then
-		# Read PID from file
-		PID=$(cat "${SERVER_JAR}.pid")
+  # Get PID file
+  if [[ -f "${SERVER_JAR}.pid" ]]; then
+    # Read PID from file
+    PID=$(cat "${SERVER_JAR}.pid")
 
-		# Check PID is alive
-		kill -0 $PID &> /dev/null
-		ALIVE=$?
+    # Check PID is alive
+    kill -0 $PID &> /dev/null
+    ALIVE=$?
 
-		if [[ $ALIVE -eq 0 ]]; then
-			_running=1
-		else
-			# PID file found, but server not running -> remove PID file
-			rm "${SERVER_JAR}.pid"
-		fi
-	fi
-	
-	echo $_running
+    if [[ $ALIVE -eq 0 ]]; then
+      _running=1
+    else
+      # PID file found, but server not running -> remove PID file
+      rm "${SERVER_JAR}.pid"
+    fi
+  fi
+  
+  echo $_running
 }
 
 # This function returns the PID of the screen session $SCREEN_NAME
@@ -203,44 +203,48 @@ function stopServer {
 
     if [[ $TRIES -ge 5 ]]; then
         error "Stopping server failed! You should check the server log files"
-    	return
+        
+        return
+    else
+      info "Server shutdown successfull!"
+      rm -Rf "${SERVER_JAR}.pid"
+      
+      return
     fi
   done
-
-	rm -Rf "${SERVER_JAR}.pid"
 }
 
 # Creates a backup of the given world in the following format:
 # DD-MM-YYY_hh-mm-ss_$WORLD_NAME.tar.gz
 function backupWorld {
-	if [[ -z "$1" ]]; then
+  if [[ -z "$1" ]]; then
     error "No world name given"
-		return
+    return
   fi
 
-	# Check backup folder existing
-	if [[ ! -d $WORLD_BACKUP_DIR ]]; then
-		mkdir $WORLD_BACKUP_DIR
-	fi
+  # Check backup folder existing
+  if [[ ! -d $WORLD_BACKUP_DIR ]]; then
+    mkdir $WORLD_BACKUP_DIR
+  fi
 
-	# Build world backup name
-	local WORLD_BACKUP_DATE=$(date "+%d-%m-%y_%H-%M-%S")
-	local WORLD_BACKUP_FILE="${WORLD_BACKUP_DATE}_${1}.tar.gz"
-	local WORLD_BACKUP_FULLPATH="${WORLD_BACKUP_DIR}/${WORLD_BACKUP_FILE}"
+  # Build world backup name
+  local WORLD_BACKUP_DATE=$(date "+%d-%m-%y_%H-%M-%S")
+  local WORLD_BACKUP_FILE="${WORLD_BACKUP_DATE}_${1}.tar.gz"
+  local WORLD_BACKUP_FULLPATH="${WORLD_BACKUP_DIR}/${WORLD_BACKUP_FILE}"
 
-	if [[ ! -f "$WORLD_BACKUP_FULLPATH" ]]; then
-		info "Creating backup from world $1 ..."
-		tar -zcf "$WORLD_BACKUP_FULLPATH" "${BASE_DIR}/$1"
+  if [[ ! -f "$WORLD_BACKUP_FULLPATH" ]]; then
+    info "Creating backup from world $1 ..."
+    tar -zcf "$WORLD_BACKUP_FULLPATH" "${BASE_DIR}/$1"
 
-		# Check exit code for success
-		if [[ $? -eq 0 ]]; then
-			info "Successfully saved world to: $WORLD_BACKUP_FULLPATH"
-		else
-			error "World backup failed - please check read/write permissions."
-		fi
-	else
-		error "Could not create backup for world '$1': Backup already exists."
-	fi
+    # Check exit code for success
+    if [[ $? -eq 0 ]]; then
+      info "Successfully saved world to: $WORLD_BACKUP_FULLPATH"
+    else
+      error "World backup failed - please check read/write permissions."
+    fi
+  else
+    error "Could not create backup for world '$1': Backup already exists."
+  fi
 }
 
 function removeWorld {
@@ -384,11 +388,11 @@ case "$1" in
   "reload")
     doCmd "reload"
     ;;
-	"whitelist")
-		doCmd "whitelist" ${@:2}
-		;;
+  "whitelist")
+    doCmd "whitelist" ${@:2}
+    ;;
 
-	#- World Management Commands
+  #- World Management Commands
   "wdel")
     removeWorld $2
     ;;
@@ -405,7 +409,7 @@ case "$1" in
     else
       error "The Server with screen name '$SCREEN_NAME' is NOT running!"
     fi
-	;;
+  ;;
 
   #- Get help
   "help")
