@@ -1,19 +1,18 @@
 Minestart - Control your MC Server!
 ===================================
-#### Stable Version: [1.2.0.5](https://github.com/morphesus/Minestart/releases/tag/v1.2.0.5 "Stable version")
-###### Development Version: [1.2.1.0](https://github.com/morphesus/Minestart/tree/1.2.1.0-dev "Development version")
+#### Stable Version: [1.2.1.0](https://github.com/morphesus/Minestart/releases/tag/v1.2.1.0 "Stable version")
 
 Requirements
 ------------
 
-* __Linux__ systems (Debian, CentOS, ...) -> _MAC OSX is currently NOT supported!_
+* __Linux__ systems (Debian, CentOS, ...) -> _MAC OSX is currently NOT supported, but may work!_
 * __bash__ is required (On Debian based systems: apt-get install bash)
 * __screen__ is required (On Debian based systems: apt-get install screen)
 * __tar__ is required to create backups
 * _Optional:_ __git__ if you want to clone the Minestart repository
 
 The Script is also working on ARM devices, such as an Tablet PC with Android or
-the Raspberry Pi (But Minecraft is working not very well on the PI :P)
+the Raspberry Pi (But Minecraft is working not that well on the PI :P)
 
 Tutorial
 --------
@@ -22,7 +21,7 @@ Tutorial
 
 At first you have to download Minestart. You can download the master.zip file,
 which contains all minestart files you need, directly from GitHub. Or you can
-clone the Git Repository.
+clone the Git Repository using `git clone https://github.com/morphesus/Minestart.git`.
 
 __Which way is better?__
 
